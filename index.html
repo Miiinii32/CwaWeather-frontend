@@ -6,27 +6,27 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>森森天氣</title>
+    <title>瑪利歐天氣</title>
     <link rel="icon" type="image/png" href="./icon-v2.png" />
     <link rel="apple-touch-icon" href="./icon-v2.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="./icon-v2.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Zen+Maru+Gothic:wght@400;700;900&display=swap"
       rel="stylesheet"
     />
 
     <style>
       :root {
-        --ac-green: #7de1a9;
-        --ac-bg-pattern: #8fd8af;
-        --ac-cream: #fffef2;
-        --ac-yellow: #f9f195;
-        --ac-brown: #796452;
-        --ac-blue: #4fb5d9;
-        --ac-dark: #58504a;
-        --ac-card-border: #e6e0c8;
+        /* 瑪利歐風格配色 */
+        --mario-red: #e4000f;
+        --mario-blue: #007bff;
+        --mario-yellow: #fdd835;
+        --mario-brick: #a4320e;
+        --mario-dark: #212121;
+        --mario-cloud-white: #ffffff;
+        --mario-grass-green: #37b400;
       }
 
       * {
@@ -37,21 +37,30 @@
       }
 
       body {
-        font-family: "Zen Maru Gothic", sans-serif;
-        background-color: var(--ac-green);
-        /* 更細緻的斜紋背景 */
-        background-image: repeating-linear-gradient(
-          45deg,
-          transparent,
-          transparent 20px,
-          rgba(255, 255, 255, 0.2) 20px,
-          rgba(255, 255, 255, 0.2) 40px
-        );
+        /* 天藍色背景 */
+        font-family: "Press Start 2P", "Zen Maru Gothic", sans-serif;
+        background-color: var(--mario-blue);
         min-height: 100vh;
-        color: var(--ac-dark);
-        /* 防止 iOS 左右滑動 */
+        color: var(--mario-dark);
         overflow-x: hidden;
         padding-bottom: 20px;
+        /* 瑪利歐雲朵背景 (簡化) */
+        background-image: radial-gradient(
+            circle at 20% 10%,
+            var(--mario-cloud-white) 50px,
+            transparent 50px
+          ),
+          radial-gradient(
+            circle at 80% 30%,
+            var(--mario-cloud-white) 40px,
+            transparent 40px
+          ),
+          radial-gradient(
+            circle at 50% 50%,
+            var(--mario-cloud-white) 60px,
+            transparent 60px
+          );
+        background-size: 150px 150px;
       }
 
       /* 頂部狀態列 */
@@ -60,78 +69,92 @@
         justify-content: space-between;
         align-items: center;
         padding: 15px 20px;
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(10px);
+        /* 磚塊平台效果 */
+        background: var(--mario-grass-green);
+        border-bottom: 8px solid var(--mario-brick);
         position: sticky;
         top: 0;
         z-index: 100;
+        box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
       }
 
       .location-pill {
-        background: var(--ac-yellow);
-        color: var(--ac-brown);
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-weight: 900;
-        font-size: 1.1rem;
-        transform: rotate(-2deg);
-        border: 2px solid white;
-        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+        background: var(--mario-yellow);
+        color: var(--mario-dark);
+        padding: 5px 10px;
+        /* 方形邊框 */
+        border-radius: 4px;
+        font-weight: 400; /* 像素字體不適用 900 */
+        font-size: 0.8rem;
+        border: 2px solid var(--mario-dark);
+        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
       }
 
       .update-pill {
-        font-size: 0.8rem;
+        font-size: 0.6rem;
         color: white;
-        background: rgba(0, 0, 0, 0.2);
-        padding: 4px 10px;
-        border-radius: 12px;
+        background: var(--mario-red);
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 2px solid var(--mario-dark);
+        box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
       }
 
       .container {
         padding: 20px;
         max-width: 600px;
-        /* 限制在大手機寬度 */
         margin: 0 auto;
       }
 
       /* === 核心：今日焦點卡片 === */
       .hero-card {
-        background: var(--ac-cream);
-        border-radius: 35px;
+        background: var(--mario-cloud-white);
+        /* 方形卡片 */
+        border-radius: 8px;
         padding: 30px 25px;
         text-align: center;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        border: 4px solid white;
+        /* 瑪利歐磚塊邊框 */
+        box-shadow: 0 8px 0 var(--mario-brick), 0 10px 0 rgba(0, 0, 0, 0.3);
+        border: 4px solid var(--mario-dark);
         margin-bottom: 25px;
         position: relative;
+        /* 內部字體調整為非像素，較易閱讀，但標題用像素字體 */
+        font-family: "Zen Maru Gothic", sans-serif;
       }
 
-      /* 像動森的對話氣泡 */
+      .hero-card > .hero-temp-container,
+      .hero-card > .advice-grid {
+        font-family: "Press Start 2P", "Zen Maru Gothic", sans-serif;
+      }
+
+      /* 蘑菇/金幣問號磚塊效果 */
       .hero-period {
         position: absolute;
         top: -15px;
         left: 50%;
         transform: translateX(-50%);
-        background: var(--ac-blue);
-        color: white;
-        padding: 5px 20px;
-        border-radius: 20px;
-        font-weight: bold;
-        border: 3px solid white;
-        box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+        background: var(--mario-yellow);
+        color: var(--mario-dark);
+        padding: 5px 15px;
+        /* 磚塊形狀 */
+        border-radius: 4px;
+        font-weight: 400;
+        font-size: 0.7rem;
+        border: 3px solid var(--mario-dark);
+        box-shadow: 0 4px 0 var(--mario-brick);
       }
 
       .hero-temp-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 15px;
         margin: 15px 0;
       }
 
       .hero-icon {
-        font-size: 5rem;
-        filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.1));
+        font-size: 3.5rem; /* 像素字體較大，縮小圖標 */
+        filter: drop-shadow(4px 4px 0 var(--mario-brick));
         animation: bounce 3s infinite;
       }
 
@@ -142,22 +165,26 @@
         }
 
         50% {
-          transform: translateY(-10px);
+          transform: translateY(-8px);
         }
       }
 
       .hero-temp {
-        font-size: 4.5rem;
-        font-weight: 900;
-        color: var(--ac-brown);
+        font-size: 3rem;
+        font-weight: 400;
+        color: var(--mario-red);
         line-height: 1;
+        /* 像素風格字體的邊框/陰影 */
+        text-shadow: 2px 2px 0 var(--mario-dark);
       }
 
       .hero-desc {
-        font-size: 1.5rem;
-        color: #8a7b70;
+        font-size: 1.2rem;
+        color: var(--mario-dark);
         margin-bottom: 20px;
         font-weight: bold;
+        /* 非像素字體，讓描述更清晰 */
+        font-family: "Zen Maru Gothic", sans-serif;
       }
 
       /* === 上班族最愛的：快速建議區 === */
@@ -167,39 +194,44 @@
         gap: 15px;
         margin-top: 20px;
         padding-top: 20px;
-        border-top: 2px dashed #e0d8c0;
+        /* 虛線改為實線的地面/平台感 */
+        border-top: 4px solid var(--mario-brick);
       }
 
       .advice-item {
         display: flex;
         flex-direction: column;
         align-items: center;
-        background: rgba(255, 255, 255, 0.5);
+        background: var(--mario-yellow);
         padding: 10px;
-        border-radius: 20px;
+        border-radius: 4px;
+        border: 3px solid var(--mario-dark);
+        box-shadow: 2px 2px 0 var(--mario-brick);
       }
 
       .advice-icon {
-        font-size: 2rem;
+        font-size: 1.8rem;
         margin-bottom: 5px;
+        /* 像素風格圖標的邊框效果 */
+        filter: drop-shadow(1px 1px 0 var(--mario-dark));
       }
 
       .advice-text {
-        font-size: 1.4rem;
-        font-weight: 900;
-        color: var(--ac-brown);
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--mario-dark);
         margin: 5px 0;
         line-height: 1.2;
       }
 
       /* === 稍後預報：橫向滑動區 === */
       .section-title {
-        font-size: 1.2rem;
-        color: white;
+        font-size: 1rem;
+        color: var(--mario-yellow);
         margin-bottom: 15px;
         margin-left: 10px;
-        font-weight: 900;
-        text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+        font-weight: 400;
+        text-shadow: 2px 2px 0 var(--mario-dark);
       }
 
       .scroll-container {
@@ -207,7 +239,6 @@
         overflow-x: auto;
         gap: 15px;
         padding-bottom: 10px;
-        /* 隱藏滾動條但保留功能 */
         scrollbar-width: none;
         -ms-overflow-style: none;
       }
@@ -217,36 +248,39 @@
       }
 
       .mini-card {
-        min-width: 140px;
-        background: rgba(255, 255, 255, 0.85);
-        border-radius: 25px;
-        padding: 20px 15px;
+        min-width: 120px;
+        background: var(--mario-cloud-white);
+        border-radius: 4px;
+        padding: 15px 10px;
         text-align: center;
-        border: 3px solid white;
+        border: 3px solid var(--mario-dark);
+        box-shadow: 0 4px 0 var(--mario-brick);
         flex-shrink: 0;
-        /* 防止被擠壓 */
       }
 
       .mini-time {
-        background: var(--ac-green);
+        background: var(--mario-red);
         color: white;
-        padding: 3px 10px;
-        border-radius: 10px;
-        font-size: 0.8rem;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.6rem;
         display: inline-block;
-        margin-bottom: 10px;
-        font-weight: bold;
+        margin-bottom: 8px;
+        font-weight: 400;
+        border: 2px solid var(--mario-dark);
       }
 
       .mini-icon {
-        font-size: 2.5rem;
+        font-size: 2rem;
         margin: 5px 0;
+        filter: drop-shadow(1px 1px 0 var(--mario-dark));
       }
 
       .mini-temp {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: var(--ac-dark);
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--mario-dark);
+        text-shadow: 1px 1px 0 var(--mario-yellow);
       }
 
       /* Loading 畫面 */
@@ -256,32 +290,37 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--ac-green);
+        background: var(--mario-blue);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         z-index: 999;
       }
+
+      .loading-screen p {
+        font-family: "Zen Maru Gothic", sans-serif;
+      }
     </style>
   </head>
 
   <body>
     <div id="loading" class="loading-screen">
-      <div style="font-size: 4rem; animation: bounce 2s infinite">☁️</div>
+      <div style="font-size: 4rem; animation: bounce 2s infinite">⭐</div>
       <p style="color: white; font-weight: bold; margin-top: 20px">
-        正在觀測雲的流動...
+        庫巴正在發送天氣預報...
       </p>
     </div>
+
     <div class="status-bar">
-      <div class="location-pill">📍 新北市</div>
+      <div class="location-pill">📍 香菇王國</div>
       <div id="updateTime" class="update-pill">更新中...</div>
     </div>
 
     <div class="container" id="mainContent" style="display: none">
       <div id="heroCard"></div>
 
-      <h3 class="section-title">稍後預報</h3>
+      <h3 class="section-title">下一關預報</h3>
       <div class="scroll-container" id="futureForecasts"></div>
     </div>
 
@@ -290,31 +329,31 @@
         "https://weather-new-taipei-city.zeabur.app/api/weather/NewTaipeiCity";
 
       function getWeatherIcon(weather) {
-        if (!weather) return "🌤️";
+        if (!weather) return "🍄";
         if (weather.includes("晴")) return "☀️";
-        if (weather.includes("多雲")) return "⛅";
-        if (weather.includes("陰")) return "☁️";
-        if (weather.includes("雨")) return "🌧️";
-        if (weather.includes("雷")) return "⛈️";
-        return "🌤️";
+        if (weather.includes("多雲")) return "☁️";
+        if (weather.includes("陰")) return "👻";
+        if (weather.includes("雨")) return "💧";
+        if (weather.includes("雷")) return "⚡";
+        return "⭐";
       }
 
       function getAdvice(rainProb, maxTemp) {
-        let rainIcon = "🌂";
-        let rainText = "不用帶傘";
+        let rainIcon = "💰";
+        let rainText = "金幣不用怕水";
         if (parseInt(rainProb) > 30) {
-          rainIcon = "☂️";
-          rainText = "記得帶傘！";
+          rainIcon = "P"; /* P-Wing / 傘 */
+          rainText = "帶傘！預防敵人！";
         }
 
-        let clothIcon = "👕";
-        let clothText = "舒適穿搭";
+        let clothIcon = "🔥";
+        let clothText = "火焰花裝";
         if (parseInt(maxTemp) >= 28) {
           clothIcon = "🎽";
-          clothText = "短袖出發";
+          clothText = "輕裝過關";
         } else if (parseInt(maxTemp) <= 20) {
-          clothIcon = "🧥";
-          clothText = "加件外套";
+          clothIcon = "🐢";
+          clothText = "穿上龜殼外套";
         }
 
         return { rainIcon, rainText, clothIcon, clothText };
@@ -343,14 +382,16 @@
 
         document.getElementById("heroCard").innerHTML = `
                         <div class="hero-card">
-                            <div class="hero-period">${period}</div>
+                            <div class="hero-period">❓ ${period} ❓</div>
                             <div class="hero-temp-container">
                                 <div class="hero-icon">${getWeatherIcon(
                                   current.weather
                                 )}</div>
                                 <div class="hero-temp">${avgTemp}°</div>
                             </div>
-                            <div class="hero-desc">${current.weather}</div>
+                            <div class="hero-desc">目前狀態：${
+                              current.weather
+                            }</div>
                             
                             <div class="advice-grid">
                                 <div class="advice-item">
@@ -360,7 +401,7 @@
                                     <div class="advice-text">${
                                       advice.rainText
                                     }</div>
-                                    <div style="font-size:0.7rem; color:#999">降雨率 ${
+                                    <div style="font-size:0.5rem; color:#444; font-family: 'Zen Maru Gothic', sans-serif;">水管降雨率 ${
                                       current.rain
                                     }</div>
                                 </div>
@@ -371,7 +412,7 @@
                                     <div class="advice-text">${
                                       advice.clothText
                                     }</div>
-                                    <div style="font-size:0.7rem; color:#999">最高溫 ${
+                                    <div style="font-size:0.5rem; color:#444; font-family: 'Zen Maru Gothic', sans-serif;">最高關卡難度 ${
                                       current.maxTemp
                                     }°</div>
                                 </div>
@@ -392,19 +433,27 @@
           // 判斷該預報的日期是否跟今天不同，不同就是明天
           const fDate = new Date(f.startTime);
           if (fDate.getDate() !== todayDate) {
-            p = "明天" + p;
+            p = "明日";
+          }
+
+          let displayTime = p;
+          if (p !== "明日") {
+            // 確保非像素字體更容易閱讀
+            const hours = fDate.getHours().toString().padStart(2, "0");
+            const minutes = fDate.getMinutes().toString().padStart(2, "0");
+            displayTime = `${hours}:${minutes}`;
           }
 
           scrollContainer.innerHTML += `
                             <div class="mini-card">
-                                <div class="mini-time">${p}</div>
+                                <div class="mini-time">${displayTime}</div>
                                 <div class="mini-icon">${getWeatherIcon(
                                   f.weather
                                 )}</div>
                                 <div class="mini-temp">${f.minTemp}° - ${
             f.maxTemp
           }°</div>
-                                <div style="font-size:0.8rem; color:#888; margin-top:5px;">💧${
+                                <div style="font-size:0.7rem; color:#888; margin-top:5px; font-family: 'Zen Maru Gothic', sans-serif;">💧${
                                   f.rain
                                 }</div>
                             </div>
@@ -420,7 +469,7 @@
 
         document.getElementById(
           "updateTime"
-        ).textContent = `${month}月${date}日 ${days[dayIndex]}`;
+        ).textContent = `${month}/${date} ${days[dayIndex]}`;
       }
 
       async function fetchWeather() {
@@ -448,7 +497,7 @@
           }
         } catch (e) {
           console.error(e);
-          alert("天氣資料讀取失敗，狸克把網路線咬斷了！");
+          alert("天氣資料讀取失敗，碧姬公主把網路線藏起來了！");
         }
       }
 
