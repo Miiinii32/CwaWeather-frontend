@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>瑪利歐天氣</title>
+    <title>瑪利歐報天氣</title>
     <link rel="icon" type="image/png" href="./icon-v2.png" />
     <link rel="apple-touch-icon" href="./icon-v2.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="./icon-v2.png" />
@@ -19,14 +19,16 @@
 
     <style>
       :root {
-        /* 瑪利歐風格配色 */
-        --mario-red: #e4000f;
-        --mario-blue: #007bff;
-        --mario-yellow: #fdd835;
-        --mario-brick: #a4320e;
+        /* 根據參考圖調整的復古像素配色 */
+        --mario-brick-dark: #682000; /* 磚塊深色 */
+        --mario-brick-light: #a84000; /* 磚塊亮色 */
+        --mario-grass-dark: #204800; /* 草地深色 */
+        --mario-grass-light: #487000; /* 草地亮色 */
+        --mario-sky: #6488d0; /* 復古天空色 (比前版暗) */
+        --mario-red: #c80000; /* 復古紅 (更暗沉) */
+        --mario-yellow: #f8c000; /* 金幣黃 */
         --mario-dark: #212121;
-        --mario-cloud-white: #ffffff;
-        --mario-grass-green: #37b400;
+        --mario-white: #f8f8f8; /* 卡片底色 */
       }
 
       * {
@@ -37,30 +39,17 @@
       }
 
       body {
-        /* 天藍色背景 */
+        /* 復古藍色背景 */
         font-family: "Press Start 2P", "Zen Maru Gothic", sans-serif;
-        background-color: var(--mario-blue);
+        background-image: url("mario_bg5.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        /* background-color: var(--mario-sky); */
         min-height: 100vh;
         color: var(--mario-dark);
         overflow-x: hidden;
         padding-bottom: 20px;
-        /* 瑪利歐雲朵背景 (簡化) */
-        background-image: radial-gradient(
-            circle at 20% 10%,
-            var(--mario-cloud-white) 50px,
-            transparent 50px
-          ),
-          radial-gradient(
-            circle at 80% 30%,
-            var(--mario-cloud-white) 40px,
-            transparent 40px
-          ),
-          radial-gradient(
-            circle at 50% 50%,
-            var(--mario-cloud-white) 60px,
-            transparent 60px
-          );
-        background-size: 150px 150px;
+        /* 移除雲朵，維持單色背景，讓卡片更突出 */
       }
 
       /* 頂部狀態列 */
@@ -69,25 +58,25 @@
         justify-content: space-between;
         align-items: center;
         padding: 15px 20px;
-        /* 磚塊平台效果 */
-        background: var(--mario-grass-green);
-        border-bottom: 8px solid var(--mario-brick);
+        /* 參照圖中的深綠色草地 */
+        background: var(--mario-grass-light);
+        border-bottom: 8px solid var(--mario-brick-dark); /* 深色磚塊 */
         position: sticky;
         top: 0;
         z-index: 100;
-        box-shadow: 0 4px 0 rgba(0, 0, 0, 0.3);
+        /* 像素風格陰影 */
+        box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5);
       }
 
       .location-pill {
         background: var(--mario-yellow);
         color: var(--mario-dark);
         padding: 5px 10px;
-        /* 方形邊框 */
-        border-radius: 4px;
-        font-weight: 400; /* 像素字體不適用 900 */
+        border-radius: 2px; /* 更銳利的直角 */
+        font-weight: 400;
         font-size: 0.8rem;
-        border: 2px solid var(--mario-dark);
-        box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+        border: 3px solid var(--mario-dark);
+        box-shadow: 3px 3px 0 var(--mario-brick-dark);
       }
 
       .update-pill {
@@ -95,9 +84,9 @@
         color: white;
         background: var(--mario-red);
         padding: 4px 8px;
-        border-radius: 4px;
-        border: 2px solid var(--mario-dark);
-        box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+        border-radius: 2px;
+        border: 3px solid var(--mario-dark);
+        box-shadow: 2px 2px 0 var(--mario-brick-dark);
       }
 
       .container {
@@ -108,17 +97,15 @@
 
       /* === 核心：今日焦點卡片 === */
       .hero-card {
-        background: var(--mario-cloud-white);
-        /* 方形卡片 */
-        border-radius: 8px;
+        background: var(--mario-white);
+        border-radius: 6px;
         padding: 30px 25px;
         text-align: center;
-        /* 瑪利歐磚塊邊框 */
-        box-shadow: 0 8px 0 var(--mario-brick), 0 10px 0 rgba(0, 0, 0, 0.3);
+        /* 復古像素卡片厚度 */
+        box-shadow: 0 6px 0 var(--mario-brick-dark), 0 10px 0 rgba(0, 0, 0, 0.4);
         border: 4px solid var(--mario-dark);
         margin-bottom: 25px;
         position: relative;
-        /* 內部字體調整為非像素，較易閱讀，但標題用像素字體 */
         font-family: "Zen Maru Gothic", sans-serif;
       }
 
@@ -127,7 +114,7 @@
         font-family: "Press Start 2P", "Zen Maru Gothic", sans-serif;
       }
 
-      /* 蘑菇/金幣問號磚塊效果 */
+      /* 問號磚塊效果 */
       .hero-period {
         position: absolute;
         top: -15px;
@@ -136,12 +123,11 @@
         background: var(--mario-yellow);
         color: var(--mario-dark);
         padding: 5px 15px;
-        /* 磚塊形狀 */
         border-radius: 4px;
         font-weight: 400;
         font-size: 0.7rem;
         border: 3px solid var(--mario-dark);
-        box-shadow: 0 4px 0 var(--mario-brick);
+        box-shadow: 0 4px 0 var(--mario-brick-dark);
       }
 
       .hero-temp-container {
@@ -153,20 +139,10 @@
       }
 
       .hero-icon {
-        font-size: 3.5rem; /* 像素字體較大，縮小圖標 */
-        filter: drop-shadow(4px 4px 0 var(--mario-brick));
+        font-size: 3.5rem;
+        /* 圖標陰影與磚塊顏色統一 */
+        filter: drop-shadow(4px 4px 0 var(--mario-brick-dark));
         animation: bounce 3s infinite;
-      }
-
-      @keyframes bounce {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-
-        50% {
-          transform: translateY(-8px);
-        }
       }
 
       .hero-temp {
@@ -174,8 +150,8 @@
         font-weight: 400;
         color: var(--mario-red);
         line-height: 1;
-        /* 像素風格字體的邊框/陰影 */
-        text-shadow: 2px 2px 0 var(--mario-dark);
+        /* 像素風格字體的黑色描邊更明顯 */
+        text-shadow: 3px 3px 0 var(--mario-dark);
       }
 
       .hero-desc {
@@ -183,7 +159,6 @@
         color: var(--mario-dark);
         margin-bottom: 20px;
         font-weight: bold;
-        /* 非像素字體，讓描述更清晰 */
         font-family: "Zen Maru Gothic", sans-serif;
       }
 
@@ -194,8 +169,8 @@
         gap: 15px;
         margin-top: 20px;
         padding-top: 20px;
-        /* 虛線改為實線的地面/平台感 */
-        border-top: 4px solid var(--mario-brick);
+        /* 深色分隔線 */
+        border-top: 4px solid var(--mario-brick-dark);
       }
 
       .advice-item {
@@ -206,14 +181,13 @@
         padding: 10px;
         border-radius: 4px;
         border: 3px solid var(--mario-dark);
-        box-shadow: 2px 2px 0 var(--mario-brick);
+        box-shadow: 3px 3px 0 var(--mario-brick-dark);
       }
 
       .advice-icon {
         font-size: 1.8rem;
         margin-bottom: 5px;
-        /* 像素風格圖標的邊框效果 */
-        filter: drop-shadow(1px 1px 0 var(--mario-dark));
+        filter: drop-shadow(2px 2px 0 var(--mario-dark));
       }
 
       .advice-text {
@@ -227,7 +201,7 @@
       /* === 稍後預報：橫向滑動區 === */
       .section-title {
         font-size: 1rem;
-        color: var(--mario-yellow);
+        color: var(--mario-yellow); /* 黃色標題 */
         margin-bottom: 15px;
         margin-left: 10px;
         font-weight: 400;
@@ -249,12 +223,12 @@
 
       .mini-card {
         min-width: 120px;
-        background: var(--mario-cloud-white);
+        background: var(--mario-white);
         border-radius: 4px;
         padding: 15px 10px;
         text-align: center;
         border: 3px solid var(--mario-dark);
-        box-shadow: 0 4px 0 var(--mario-brick);
+        box-shadow: 0 4px 0 var(--mario-brick-dark);
         flex-shrink: 0;
       }
 
@@ -262,7 +236,7 @@
         background: var(--mario-red);
         color: white;
         padding: 3px 8px;
-        border-radius: 4px;
+        border-radius: 2px;
         font-size: 0.6rem;
         display: inline-block;
         margin-bottom: 8px;
@@ -290,7 +264,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: var(--mario-blue);
+        background: var(--mario-sky);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -313,7 +287,7 @@
     </div>
 
     <div class="status-bar">
-      <div class="location-pill">📍 香菇王國</div>
+      <div class="location-pill">📍 新北市王國</div>
       <div id="updateTime" class="update-pill">更新中...</div>
     </div>
 
@@ -339,8 +313,8 @@
       }
 
       function getAdvice(rainProb, maxTemp) {
-        let rainIcon = "💰";
-        let rainText = "金幣不用怕水";
+        let rainIcon = "☂️";
+        let rainText = "雨傘裝備";
         if (parseInt(rainProb) > 30) {
           rainIcon = "P"; /* P-Wing / 傘 */
           rainText = "帶傘！預防敵人！";
